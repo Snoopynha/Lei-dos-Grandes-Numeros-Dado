@@ -15,7 +15,7 @@
         <aside class="sidebar">
             <h1>Lançador de Moeda</h1>
 
-            <form id="meuForm">
+            <form id="form">
                 <div class="input-group">
                     <label for="qtdLancamentos">Total de Lançamentos</label>
                     <input type="number" id="qtdLancamentos" value="1000" min="2">
@@ -23,6 +23,10 @@
                 <div class="input-group">
                     <label for="intervaloLancamentos">Intervalo (Eixo X)</label>
                     <input type="number" id="intervaloLancamentos" value="50" min="1">
+                </div>
+                <div class="input-group checkbox-group">
+                    <input type="checkbox" id="checkSeparar" onchange="alternarVisualizacao()">
+                    <label for="checkSeparar">Visulização Separada</label>
                 </div>
                 <div class="button-group">
                     <button type="button" class="btn-primary" onclick="iniciarLancamentos()">Lançar Moedas</button>
@@ -54,7 +58,11 @@
                 </div>
             </div>
 
-            <div class="charts-wrapper">
+            <div id="containerJunto" class="chart-container">
+                <canvas id="graficoJunto"></canvas>
+            </div>
+
+            <div id="containerSeparado">
                 <div class="chart-container"><canvas id="graficoCaras"></canvas></div>
                 <div class="chart-container"><canvas id="graficoCoroas"></canvas></div>
             </div>

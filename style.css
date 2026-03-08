@@ -48,19 +48,26 @@ form {
     margin-bottom: 15px;
 }
 
-label {
+label,
+.checkbox-group label {
     display: block;
     font-weight: bold;
     margin-bottom: 5px;
     color: #34495e;
 }
 
-input {
+input:not([type="checkbox"]) {
     width: 100%;
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 5px;
     box-sizing: border-box;
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
 }
 
 .explanation-box {
@@ -162,11 +169,17 @@ input {
 }
 
 .chart-container {
-    height: 300px;
+    width: 100%;
+    min-height: 300px;
     background: white;
     border-radius: 10px;
     padding: 10px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+#containerSeparado {
+    flex: 1;
+    display: none;
 }
 
 @media (max-width: 768px) {
