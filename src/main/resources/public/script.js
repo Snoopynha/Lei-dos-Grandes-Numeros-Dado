@@ -1,6 +1,9 @@
 let graficoCarasInstance = null;
 let graficoCoroasInstance = null;
 
+let graficoJuntoInstance = null;
+let ultimosDados = null;
+
 function iniciarLancamentos() {
     const qtdLancamentos = document.getElementById('qtdLancamentos').value;
     const intervaloLancamentos = document.getElementById('intervaloLancamentos').value;
@@ -18,25 +21,13 @@ function iniciarLancamentos() {
     });
 }
 
-function limparGraficos() {
-    if (graficoCarasInstance) graficoCarasInstance.destroy();
-    if (graficoCoroasInstance) graficoCoroasInstance.destroy();
-    document.getElementById('meuForm').reset();
-}
+function graficoJunto(data) {
+    document.getElementById('containerJunto').style.display = 'block';
+    document.getElementById('containerSeparado').style.display = 'none';
 
-function atualizarGraficos(data) {
-    const ctxCaras = document.getElementById('graficoCaras').getContext('2d');
-    const ctxCoroas = document.getElementById('graficoCoroas').getContext('2d');
+    limparGraficos();
 
-    // Se já existir um gráfico destroi
-    if (graficoCarasInstance) {
-        graficoCarasInstance.destroy();
-    }
-    if (graficoCoroasInstance) {
-        graficoCoroasInstance.destroy();
-    }
-
-    // Configuração comum para os dois gráficos
+    // Configuração básica
     const commonOptions = {
         responsive: true,
         maintainAspectRatio: false,
@@ -61,6 +52,54 @@ function atualizarGraficos(data) {
         borderDash: [5, 5]
     };
 
+    const ctx = document.getElementById('graficoJunto').getContext('2d');
+    graficoJuntoInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: data.labels,
+            datasets: [
+                { label: 'Caras', data: data.caras, borderColor: '#3498db', fill: false },
+                { label: 'Coroas', data: data.coroas, borderColor: '#f1c40f', fill: false },
+                datasetEstabilizacao
+            ]
+        },
+        options: commonOptions
+    });
+}
+
+function graficoSeparado(data) {
+    document.getElementById('containerSeparado').style.display = 'block';
+    document.getElementById('containerJunto').style.display = 'none';
+    
+    limparGraficos();
+
+    // Configuração básica
+    const commonOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        elements: { point: { radius: 2 } },
+        scales: {
+            y: {
+                min: 0,
+                max: 1,
+                title: { display: true, text: 'Frequência Relativa' }
+            },
+            x: { title: { display: true, text: 'Número de Lançamentos' } }
+        }
+    };
+
+    const datasetEstabilizacao = {
+        label: 'Estabilização (0.5)',
+        data: Array(data.labels.length).fill(0.5),
+        borderColor: 'red',
+        borderWidth: 2,
+        pointRadius: 0,
+        fill: false,
+        borderDash: [5, 5]
+    };
+
+    const ctxCaras = document.getElementById('graficoCaras').getContext('2d');
+    const ctxCoroas = document.getElementById('graficoCoroas').getContext('2d');
     graficoCarasInstance = new Chart(ctxCaras, {
         type: 'line',
         data: {
@@ -72,7 +111,7 @@ function atualizarGraficos(data) {
         },
         options: commonOptions
     });
-
+    
     graficoCoroasInstance = new Chart(ctxCoroas, {
         type: 'line',
         data: {
@@ -84,4 +123,34 @@ function atualizarGraficos(data) {
         },
         options: commonOptions
     });
+}
+
+function atualizarGraficos(data) {
+    ultimosDados = data;
+    const checkSeparar = document.getElementById('checkSeparar').checked;
+
+    if(checkSeparar) {
+        graficoSeparado(data);
+    } else {
+        graficoJunto(data);
+    }
+}
+
+function alternarVisualizacao() {
+    if (ultimosDados) {
+        atualizarGraficos(ultimosDados);
+    }
+}
+
+
+function limparGraficos() {
+    if (graficoCarasInstance) graficoCarasInstance.destroy();
+    if (graficoCoroasInstance) graficoCoroasInstance.destroy();
+    if (graficoJuntoInstance) graficoJuntoInstance.destroy();
+
+    const checkbox = document.getElementById('checkSeparar');
+    const estadoCheckbox = checkbox.checked;
+
+    document.getElementById('form').reset();
+    checkbox.checked = estadoCheckbox;
 }
