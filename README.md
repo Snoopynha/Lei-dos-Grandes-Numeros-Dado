@@ -17,7 +17,7 @@ Através da simulação de lançamentos de dados, o sistema calcula a frequênci
 
 Diferente da moeda (50/50), um dado justo possui 6 resultados possíveis.
 - **Probabilidade Teórica ($P$):** $1/6 \approx 0,1667$ para cada face.
-- **Frequência Relativa ($f_n$):** $$f_n = \frac{\text{sucessos da face}}{\text{total de lançamentos}}$$
+- **Frequência Relativa ($f_n$):** É a razão entre o número de sucessos da face e o número total de lançamentos. $$f_n = \frac{\text{sucessos da face}}{\text{total de lançamentos}}$$
 
 ### O Fenômeno da Convergência (Propriedade D)
 Como observado nos gráficos deste projeto:
