@@ -2,7 +2,7 @@ import java.util.Random;
 import spark.Spark;
 import com.google.gson.Gson;
 
-public class LancamentoMoedas {
+public class LancamentoDados {
 	public static void main(String[] args) {
 		Spark.port(4567);
 		Spark.staticFileLocation("public");
@@ -14,27 +14,24 @@ public class LancamentoMoedas {
 			// Calcula o tamanho exato necessário (arredondando para cima)
 			int tamanhoArray = (int) Math.ceil((double) qtdLancamentos / intervaloLancamentos);
 
-			int totalCaras = 0;
-			int totalCoroas = 0;
+			int[] totalFaces = new int[6];
 			Random random = new Random();
 
 			// Arrays para armazenar as frequências que serão enviadas
-			double[] freqCaras = new double[tamanhoArray];
-			double[] freqCoroas = new double[tamanhoArray];
+			double[][] freqFaces = new double[6][tamanhoArray];
 			String[] labels = new String[tamanhoArray];
 
 			int index = 0;
 			for (int i = 0; i < qtdLancamentos; i++) {
-				if (random.nextBoolean()) {
-					totalCaras++;
-				} else {
-					totalCoroas++;
-				}
+				int face = random.nextInt(6);
+				totalFaces[face]++;
 
 				// Só armazena no array se for um ponto de intervalo
-				if (i % intervaloLancamentos == 0 && index < tamanhoArray) {
-					freqCaras[index] = (double) totalCaras / (i + 1);
-					freqCoroas[index] = (double) totalCoroas / (i + 1);
+				if ((i < 20 || i % intervaloLancamentos == 0) && index < tamanhoArray) {
+					for (int j = 0; j < 6; j++) {
+						freqFaces[j][index] = (double) totalFaces[j] / (i + 1);
+					}
+
 					labels[index] = String.valueOf(i + 1);
 					index++;
 				}
@@ -42,9 +39,10 @@ public class LancamentoMoedas {
 
 			java.util.Map<String, Object> resultado = new java.util.HashMap<>();
 			resultado.put("labels", labels);
-			resultado.put("caras", freqCaras);
-			resultado.put("coroas", freqCoroas);
-
+			for (int i = 0; i < 6; i++) {
+				resultado.put("face" + (i + 1), freqFaces[i]);
+			}
+			
 			res.type("application/json");
 			return new Gson().toJson(resultado);
 		});
