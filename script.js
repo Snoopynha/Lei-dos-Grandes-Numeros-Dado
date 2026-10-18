@@ -105,8 +105,8 @@ function graficoJunto(data) {
 }
 
 function graficoSeparado(data) {
-    document.getElementById('containerSeparado').style.display = 'block';
     document.getElementById('containerJunto').style.display = 'none';
+    document.getElementById('containerSeparado').style.display = 'grid';
     
     limparGraficos();
 
@@ -166,8 +166,22 @@ function atualizarGraficos(data) {
 }
 
 function alternarVisualizacao() {
+    const checkSeparar = document.getElementById('checkSeparar').checked;
+
     if (ultimosDados) {
-        atualizarGraficos(ultimosDados);
+        if (checkSeparar) {
+            graficoSeparado(ultimosDados);
+        } else {
+            graficoJunto(ultimosDados);
+        }
+    } else {
+        if (checkSeparar) {
+            document.getElementById('containerJunto').style.display = 'none';
+            document.getElementById('containerSeparado').style.display = 'grid';
+        } else {
+            document.getElementById('containerSeparado').style.display = 'none';
+            document.getElementById('containerJunto').style.display = 'block';
+        }
     }
 }
 
