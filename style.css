@@ -58,10 +58,6 @@ html, body {
     gap: 8px;
 }
 
-.sidebar-header h1::before {
-    font-size: 1.5rem;
-}
-
 .subtitle {
     font-size: 0.8rem;
     color: var(--text-muted);
@@ -235,6 +231,7 @@ input[type="number"]:focus {
     background: var(--purple-light);
 }
 
+/* Área Principal com rolagem ativa */
 .main-content {
     flex: 1;
     height: 100vh;
@@ -243,11 +240,11 @@ input[type="number"]:focus {
     flex-direction: column;
     gap: 16px;
     background-color: var(--bg-body);
-    overflow: hidden;
+    overflow-y: auto;
 }
 
 .dice-animation-area {
-    height: 140px;
+    height: 130px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -256,19 +253,18 @@ input[type="number"]:focus {
 }
 
 .dice {
-    width: 110px;
-    height: 110px;
+    width: 100px;
+    height: 100px;
     background: #ffffff;
     border: 3px solid #1e293b;
-    border-radius: 22px;
+    border-radius: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 85px;
+    font-size: 75px;
     line-height: 1;
     color: #0f172a;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.05);
-    transition: transform 0.2s ease;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
 }
 
 .shaking {
@@ -283,55 +279,44 @@ input[type="number"]:focus {
     100% { transform: translate(1px, 2px) rotate(2deg); }
 }
 
-.chart-container {
-    width: 100%;
-    max-height: 480px;
+#containerJunto {
     flex: 1;
-    min-height: 0;
+    min-height: 380px;
     background: var(--bg-card);
     border-radius: var(--radius-lg);
-    padding: 16px 20px;
+    padding: 16px;
     box-shadow: var(--shadow-sm);
     border: 1px solid var(--border-color);
     position: relative;
-    display: flex;
-    flex-direction: column;
+}
+
+#containerJunto canvas {
+    width: 100% !important;
+    height: 100% !important;
+    display: block;
+}
+
+#containerSeparado {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+    width: 100%;
 }
 
 .chart-container-mini {
-    height: 100%;
-    min-height: 240px;
+    height: 260px;
+    min-height: 260px;
     background: var(--bg-card);
     border-radius: var(--radius-md);
     padding: 12px;
     box-shadow: var(--shadow-sm);
     border: 1px solid var(--border-color);
+    position: relative;
 }
 
-#containerJunto {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
-}
-
-.grid-graficos,
-#containerSeparado {
-    flex: 1;
-    display: none;
-    min-height: 0;
-    max-height: 480px;
-    gap: 14px;
-    overflow-y: auto;
-}
-
-#containerSeparado[style*="display: block"],
-#containerSeparado[style*="display: flex"],
-#containerSeparado[style*="display: grid"],
-.grid-graficos[style*="display: grid"] {
-    display: grid !important;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    height: 100%;
+.chart-container-mini canvas {
+    width: 100% !important;
+    height: 100% !important;
+    display: block;
 }
 
 @media (max-width: 992px) {
@@ -354,18 +339,11 @@ input[type="number"]:focus {
 
     .main-content {
         height: auto;
-        overflow: visible;
         padding: 16px;
     }
 
-    .chart-container {
-        max-height: none;
+    #containerJunto {
         min-height: 320px;
-    }
-
-    .grid-graficos,
-    #containerSeparado {
-        max-height: none;
     }
 
     .nav-group {
@@ -381,27 +359,19 @@ input[type="number"]:focus {
     .dice {
         width: 85px;
         height: 85px;
-        font-size: 65px;
+        font-size: 60px;
         border-radius: 18px;
     }
 
     .dice-animation-area {
-        height: 110px;
-    }
-
-    .chart-container {
-        min-height: 260px;
-        padding: 10px;
+        height: 100px;
     }
 
     .button-group {
         flex-direction: row;
     }
 
-    #containerSeparado[style*="display: block"],
-    #containerSeparado[style*="display: flex"],
-    #containerSeparado[style*="display: grid"],
-    .grid-graficos[style*="display: grid"] {
+    #containerSeparado {
         grid-template-columns: 1fr !important;
     }
 }
